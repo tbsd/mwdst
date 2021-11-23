@@ -131,8 +131,14 @@ void Mvdst::approximate() {
   //  int i = getStartVertex();
   for (int i = getStartVertex(); i < graphSz; ++i) {
     initVertNum = i;
-    createStar(i);
-    replaceEdges();
+    try {
+      createStar(i);
+      replaceEdges();
+    } catch (...) {
+      // Если что-то пошло не так, просто скипаем решение
+      continue;
+    }
+
     best = Solution(solutionGraph);
     auto [edges_begin, edges_end] = boost::edges(*solutionGraph);
     for (auto i = edges_begin; i != edges_end; ++i) {
@@ -188,26 +194,61 @@ bool Mvdst::check() {
   return true;
 }
 void Mvdst::createStar(unsigned long centerInex) {
+  std::cout << "Creating a star" << std::endl;
+  std::set<unsigned long> initVertices;
+  initVertices.insert(centerInex);
+  while (initVertices.size() < targetDiameter - 1)
+    initVertices.insert(rand() % initSize);
   auto [vertBegin, vertEnd] = boost::vertices(*solutionGraph);
-  for (auto i = vertBegin; i != vertEnd; ++i)
+  for (auto i = vertBegin; i != vertEnd; ++i) {
     boost::clear_vertex(*i, *solutionGraph);
+    getVS(*i).inCurrentSolution = false;
+    getVS(*i).maxDistance = 0;
+  }
+
+  auto prev = initVertices.begin();
+  for (auto i = ++initVertices.begin(); i != initVertices.end(); ++i) {
+    boost::add_edge(*prev, *i, *solutionGraph);
+    prev = i;
+  }
+
   for (auto i = vertBegin; i != vertEnd; ++i)
-    if (*i != centerInex) {
-      boost::add_edge(centerInex, *i, *solutionGraph);
-      //      getVS(centerInex).degree++;
-      //      getVS(*i).degree++;
-      getVS(*i).maxDistance = 2;
+    if (!initVertices.contains(*i)) {
+      auto initBegin = initVertices.begin();
+      unsigned long minVert = *initBegin;
+      int minWeight =
+          (*matrix)[boost::edge(*initBegin, *i, *matrix).first].weight;
+      for (auto j = ++(initVertices.begin()); j != initVertices.end(); ++j) {
+        int curWeight = (*matrix)[boost::edge(*j, *i, *matrix).first].weight;
+        if (curWeight < minWeight) {
+          minWeight = curWeight;
+          minVert = *j;
+        }
+      }
+      //      boost::add_edge(minVert, *i, *solutionGraph);
+      boost::add_edge(minVert, *i, *solutionGraph);
+      //      getVS(*i).maxDistance = 2;
     }
   auto [edgesBegin, edgesEnd] = boost::edges(*solutionGraph);
   for (auto i = edgesBegin; i != edgesEnd; ++i) {
-    // получить вес из полного графа
     (*solutionGraph)[*i].weight =
         //        (*matrix)[boost::edge(i->m_source, i->m_target,
         //        *matrix).first].weight;
         manhattanDistance(getVM(i->m_source), getVM(i->m_target));
   }
-  getVS(centerInex).maxDistance = 1;
-  curDiameter = 2;
+  //  getVS(centerInex).maxDistance = 1;
+  //  curDiameter = 2;
+
+  for (auto i = vertBegin; i != vertEnd; ++i) {
+    clearMarks();
+    int d = setMaxDistances(*i);
+    if (d > curDiameter)
+      curDiameter = d;
+    //    std::cout << *i << " " << std::flush;
+  }
+  //  std::cout << std::endl;
+
+  std::cout << "Done with the star" << std::endl;
 }
 
 void Mvdst::replaceEdges() {
