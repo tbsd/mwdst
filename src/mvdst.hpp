@@ -51,10 +51,6 @@ namespace graph {
     // Итератор вершины по индексу
     VertexIt getVItM(int index);
 
-    //    std::optional<EdgeIt> findMinEdge(Solution<GraphMatrix>& solution);
-
-    //    void deleteHeavierEdges(int weight);
-
     bool hasCycle(unsigned long startV, int parentV);
 
     void clearMarks();
