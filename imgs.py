@@ -116,14 +116,14 @@ def draw_with_edges(path, edges_path):
         target = points[e[1]]
         edge = [source, target]
         draw.line(edge, fill = "red", width = 0)
-#
-#
-        #  source = points[4]
-        #  target = points[1]
+
+
+        #  source = points[16]
+        #  target = points[10]
         #  edge = [source, target]
         #  draw.line(edge, fill = "blue", width = 0)
-        #  source = points[4]
-        #  target = points[2]
+        #  source = points[42]
+        #  target = points[16]
         #  edge = [source, target]
         #  draw.line(edge, fill = "green", width = 0)
 
@@ -189,11 +189,11 @@ directory = 'tmpPics'
 for filename in os.listdir(directory):
     f = os.path.join(directory, filename)
     if os.path.isfile(f):
-        draw_with_edges("Taxicab_64.txt", f)
-draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
+        draw_with_edges("Taxicab_512.txt", f)
+draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
 exit(0)
 
-while True:
+#  while True:
 
 #  graph_to_img("Taxicab_64.txt")
 #  graph_to_img("Taxicab_128.txt")
@@ -207,11 +207,11 @@ while True:
 #  draw_solution("Taxicab_2048.txt", "Kurbatov_2048.txt")
 #  draw_solution("Taxicab_4096.txt", "Kurbatov_4096.txt")
 #
-    draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
-    #  draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
-    #  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
-    #  draw_with_edges("Taxicab_2048.txt", "Kurbatov_2048.txt")
-    #  draw_with_edges("Taxicab_4096.txt", "Kurbatov_4096.txt")
+#  draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
+#  draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
+#  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
+#  draw_with_edges("Taxicab_2048.txt", "Kurbatov_2048.txt")
+#  draw_with_edges("Taxicab_4096.txt", "Kurbatov_4096.txt")
     #  exit(0)
 
 #  draw_with_edges2("Taxicab_64.txt", "Kurbatov_64.txt")
@@ -219,4 +219,4 @@ while True:
 #  draw_with_edges2("Taxicab_512.txt", "Kurbatov_512.txt")
 #  draw_with_edges2("Taxicab_2048.txt", "Kurbatov_2048.txt")
 #  draw_with_edges2("Taxicab_4096.txt", "Kurbatov_4096.txt")
-    time.sleep(1)
+    #  time.sleep(1)

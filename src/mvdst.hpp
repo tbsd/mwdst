@@ -76,6 +76,10 @@ namespace graph {
                             int dist,
                             bool isWriting);
 
+    bool isReachable(unsigned long source,
+                     unsigned long target,
+                     unsigned long prev);
+
     const int initSize;
     const int targetDiameter;
     int curDiameter = 0;

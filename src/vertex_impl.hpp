@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <cmath>
+#include <functional>
+#include <map>
 
 namespace graph {
 
@@ -10,6 +12,8 @@ namespace graph {
     int maxDistance = 0;
     int degree = 0;
     float raito = 0;  // отношение длины текущего ребра к минимально возможному
+    std::map<int, unsigned int, std::greater<int>>
+        weights;  // веса до вершин, отсортированные по убыванию
 
     bool inCurrentSolution = false;
 
