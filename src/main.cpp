@@ -20,9 +20,9 @@ void solve(const std::filesystem::path& inFile,
 // Так было выяснено, что распределение вершин совсем не равномерное
 int main() {
   solve("../Taxicab_64.txt", "../Kurbatov_64.txt");
-  //  solve("../Taxicab_128.txt", "../Kurbatov_128.txt");
-  //  solve("../Taxicab_512.txt", "../Kurbatov_512.txt");
-  //  solve("../Taxicab_2048.txt", "../Kurbatov_2048.txt");
-  //  solve("../Taxicab_4096.txt", "../Kurbatov_4096.txt");
+  solve("../Taxicab_128.txt", "../Kurbatov_128.txt");
+  solve("../Taxicab_512.txt", "../Kurbatov_512.txt");
+  solve("../Taxicab_2048.txt", "../Kurbatov_2048.txt");
+  solve("../Taxicab_4096.txt", "../Kurbatov_4096.txt");
   return 0;
 }

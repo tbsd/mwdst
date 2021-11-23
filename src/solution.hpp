@@ -25,15 +25,22 @@ class Solution {
   Solution(std::shared_ptr<GraphMatrix> matrix) : matrix(matrix) {}
 
   Solution(const Solution<GraphMatrix>& rhs)
-      : edges(rhs.edges), matrix(rhs.matrix), weight(rhs.weight){};
+      : edges(rhs.edges),
+        matrix(rhs.matrix),
+        weight(rhs.weight),
+        diameter(rhs.diameter){};
 
   Solution(Solution<GraphMatrix>&& rhs)
-      : edges(std::move(rhs.edges)), matrix(rhs.matrix), weight(rhs.weight){};
+      : edges(std::move(rhs.edges)),
+        matrix(rhs.matrix),
+        weight(rhs.weight),
+        diameter(rhs.diameter){};
 
   Solution<GraphMatrix>& operator=(Solution<GraphMatrix>&& rhs) {
     edges = std::move(rhs.edges);
     matrix = rhs.matrix;
     weight = rhs.weight;
+    diameter = rhs.diameter;
     return *this;
   }
 
