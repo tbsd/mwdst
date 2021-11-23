@@ -1,4 +1,5 @@
 import sys
+import os
 from os.path import exists
 from PIL import Image, ImageDraw
 import time
@@ -120,7 +121,7 @@ def draw_with_edges(path, edges_path):
         im.putpixel((p[0] + dX, p[1] + dY), (255, 255, 255))
 
 
-    im.save("{}_with_edges.png".format(path))
+    im.save("{}_with_edges.png".format(edges_path))
 
 def draw_with_edges2(path, edges_path):
     if not exists(edges_path):
@@ -170,6 +171,14 @@ def draw_with_edges2(path, edges_path):
 
     im.save("{}_with_edges.png".format(path))
 
+directory = 'tmpPics'
+for filename in os.listdir(directory):
+    f = os.path.join(directory, filename)
+    if os.path.isfile(f):
+        draw_with_edges("Taxicab_64.txt", f)
+#  draw_with_edges("tmpPics/64_1568_0.txt", "Kurbatov_64.txt")
+#  draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
+exit(0)
 
 while True:
 
