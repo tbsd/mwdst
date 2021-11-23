@@ -185,13 +185,13 @@ def draw_with_edges2(path, edges_path):
 
     im.save("{}_with_edges.png".format(path))
 
-directory = 'tmpPics'
-for filename in os.listdir(directory):
-    f = os.path.join(directory, filename)
-    if os.path.isfile(f):
-        draw_with_edges("Taxicab_512.txt", f)
-draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
-exit(0)
+#  directory = 'tmpPics'
+#  for filename in os.listdir(directory):
+    #  f = os.path.join(directory, filename)
+    #  if os.path.isfile(f):
+        #  draw_with_edges("Taxicab_512.txt", f)
+#  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
+#  exit(0)
 
 #  while True:
 
@@ -207,11 +207,11 @@ exit(0)
 #  draw_solution("Taxicab_2048.txt", "Kurbatov_2048.txt")
 #  draw_solution("Taxicab_4096.txt", "Kurbatov_4096.txt")
 #
-#  draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
-#  draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
-#  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
-#  draw_with_edges("Taxicab_2048.txt", "Kurbatov_2048.txt")
-#  draw_with_edges("Taxicab_4096.txt", "Kurbatov_4096.txt")
+draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
+draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
+draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
+draw_with_edges("Taxicab_2048.txt", "Kurbatov_2048.txt")
+draw_with_edges("Taxicab_4096.txt", "Kurbatov_4096.txt")
     #  exit(0)
 
 #  draw_with_edges2("Taxicab_64.txt", "Kurbatov_64.txt")

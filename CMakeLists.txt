@@ -19,5 +19,5 @@ target_include_directories(mvdst PRIVATE
   src/
   )
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -O3")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -O3 -pthread")
 
