@@ -218,17 +218,26 @@ void Mvdst::approximate() {
   //              << std::endl;
   //  }
 
-  createStar(getStartVertex());
-  replaceEdges();
-  best = Solution(solutionGraph);
-  auto [edges_begin, edges_end] = boost::edges(*solutionGraph);
-  for (auto i = edges_begin; i != edges_end; ++i) {
-    (*solutionGraph)[*i].weight =
-        (*matrix)[boost::edge(i->m_source, i->m_target, *matrix).first].weight;
-    best.addEdge(i);
+  const int graphSz = boost::num_vertices(*matrix);
+  for (int i = 0; i < graphSz; ++i) {
+    createStar(i);
+    replaceEdges();
+    best = Solution(solutionGraph);
+    auto [edges_begin, edges_end] = boost::edges(*solutionGraph);
+    for (auto i = edges_begin; i != edges_end; ++i) {
+      (*solutionGraph)[*i].weight =
+          (*matrix)[boost::edge(i->m_source, i->m_target, *matrix).first]
+              .weight;
+      best.addEdge(i);
+    }
+    best.diameter = curDiameter;
+
+    //    io::write(*this, "../solutions/" + std::to_string(graphSz) + "_" +
+    //                         std::to_string(best.getWeight()) + "_" +
+    //                         std::to_string(i) + ".txt");
+    std::cout << "wheight: " << best.getWeight() << " size: " << best.size()
+              << std::endl;
   }
-  std::cout << "wheight: " << best.getWeight() << " size: " << best.size()
-            << std::endl;
 }
 
 const Solution<GraphMatrix> Mvdst::getSolution() const {
@@ -306,12 +315,27 @@ void Mvdst::replaceEdges() {
   while (true) {
     float maxRatio = 0;
     unsigned long maxVert = *vertBegin;
-    unsigned long maxVertNewEIndex = 0;
     for (auto i = vertBegin; i != vertEnd; ++i) {
       auto vert = getVS(*i);
       // replace with bfs and sum check HEHMDA
       // чекать, что к этому вершине можно добавить
       if (vert.degree == 1 && vert.maxDistance <= targetDiameter) {
+        for (auto j = vertBegin; j != vertEnd; ++j) {
+          if (i != j) {
+            if (getVS(*j).maxDistance > targetDiameter)
+              std::cout << "HEHMDA wtf!!!!!!!!!!!!!!!!!!!" << std::endl;
+            if (getVS(*j).maxDistance == targetDiameter)
+              continue;
+            auto [curE, dummy] = boost::out_edges(*i, *solutionGraph);
+            float raito = static_cast<float>((*solutionGraph)[*curE].weight) /
+                          manhattanDistance(getVS(*i), getVS(*j));
+            if (raito > maxRatio) {
+              maxRatio = raito;
+              maxVert = *i;
+            }
+          }
+        }
+        /*
         auto [curE, dummy] = boost::out_edges(*i, *solutionGraph);
         auto [outEBegin, outEEnd] = boost::out_edges(*i, *matrix);
         unsigned long maxEIndex = 0;
@@ -323,8 +347,6 @@ void Mvdst::replaceEdges() {
               std::cout << "HEHMDA wtf!!!!!!!!!!!!!!!!!!!" << std::endl;
             if (getVS(otherVert).maxDistance == targetDiameter)
               continue;
-            // HEHMDA !!! не пересчитывать каждый раз. Хранить в вершине.
-            // Считать только при замене ребра
             float raito = static_cast<float>((*solutionGraph)[*curE].weight) /
                           (*matrix)[*j].weight;
             if (raito > maxRatio) {
@@ -334,30 +356,44 @@ void Mvdst::replaceEdges() {
             }
           }
         }
+*/
       }
     }
-    //    std::cout << "max ratio: " << maxRatio
-    //              << " edges count: " << boost::num_edges(*solutionGraph)
-    //              << std::endl;
+    std::cout << "max ratio: " << maxRatio
+              << " edges count: " << boost::num_edges(*solutionGraph)
+              << std::endl;
     if (maxRatio <= 1.0)
       return;
     auto [curE, dummy] = boost::out_edges(maxVert, *solutionGraph);
-    auto [outEBegin, outEEnd] = boost::out_edges(maxVert, *matrix);
-    auto newE = outEBegin;
-    std::advance(newE, maxVertNewEIndex);
+    //    auto [outEBegin, outEEnd] = boost::out_edges(maxVert, *matrix);
+    //    auto newE = boost::edge(curVert, maxVert, *solutionGraph);
+    //    std::advance(newE, maxVertNewEIndex);
+    auto otherVert =
+        curE->m_source == maxVert ? curE->m_target : curE->m_source;
+    int oldWeight = (*solutionGraph)[*curE].weight;
     boost::remove_edge(curE->m_source, curE->m_target, *solutionGraph);
-    boost::add_edge(newE->m_source, newE->m_target, *solutionGraph);
+    boost::add_edge(maxVert, otherVert, *solutionGraph);
+    (*solutionGraph)[boost::edge(maxVert, otherVert, *solutionGraph).first]
+        .weight = manhattanDistance(getVM(maxVert), getVM(otherVert));
     //    std::cout << "curE->m_source: " << curE->m_source
     //              << " curE->m_target: " << curE->m_target
     //              << " newE->m_source: " << newE->m_source
     //              << " newE->m_target: " << newE->m_target
     //              << " edges count: " << boost::num_edges(*solutionGraph)
     //              << std::endl;
-    if (setMaxDistances(maxVert) > targetDiameter) {
-      //      std::cout << "HEHMDA never gonna get here !!!!!!!" << std::endl;
-      boost::remove_edge(newE->m_source, newE->m_target, *solutionGraph);
+    int maxDist = setMaxDistances(maxVert);
+    if (maxDist > curDiameter)
+      curDiameter = maxDist;
+    if (maxDist > targetDiameter) {
       boost::add_edge(curE->m_source, curE->m_target, *solutionGraph);
-      //      std::cout << "curE->m_source: "
+      boost::remove_edge(maxVert, otherVert, *solutionGraph);
+      (*solutionGraph)
+          [boost::edge(curE->m_source, curE->m_target, *solutionGraph).first]
+              .weight = oldWeight;
+      //      std::cout << "HEHMDA never gonna get here !!!!!!!" << std::endl;
+      //      boost::remove_edge(newE->m_source, newE->m_target,
+      //      *solutionGraph); boost::add_edge(curE->m_source, curE->m_target,
+      //      *solutionGraph); std::cout << "curE->m_source: "
       //                << curE->m_source
       //                << " curE->m_target: " << curE->m_target
       //                << " newE->m_source: " << newE->m_source

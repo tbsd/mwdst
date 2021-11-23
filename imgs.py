@@ -1,6 +1,7 @@
 import sys
 from os.path import exists
 from PIL import Image, ImageDraw
+import time
 
 def graph_to_img(path):
     lines = {}
@@ -78,7 +79,7 @@ def draw_with_edges(path, edges_path):
     with open(path) as fp:
         lines = fp.readlines()
     size = int(lines[0].split()[-1])
-    points = [(int(line.split()[0]), int(line.split()[1])) for line in lines[1:]]
+    points = [(int(line.split()[0]) * 10, int(line.split()[1]) * 10) for line in lines[1:]]
 
     minX = minY = maxX = maxY = 0;
     for p in points:
@@ -99,11 +100,11 @@ def draw_with_edges(path, edges_path):
     
     edges = [(int(line.split()[0]) - 1, int(line.split()[1]) - 1) for line in lines[1:]]
     draw = ImageDraw.Draw(im)
-    for e in edges:
-        source = points[e[0]]
-        target = points[e[1]]
-        edge = [source, target]
-        draw.line(edge, fill = "blue", width = 0)
+    #  for e in edges:
+        #  source = points[e[0]]
+        #  target = points[e[1]]
+        #  edge = [source, target]
+        #  draw.line(edge, fill = "blue", width = 0)
 
     lines = {}
     with open(edges_path) as fp:
@@ -170,6 +171,7 @@ def draw_with_edges2(path, edges_path):
     im.save("{}_with_edges.png".format(path))
 
 
+while True:
 
 #  graph_to_img("Taxicab_64.txt")
 #  graph_to_img("Taxicab_128.txt")
@@ -183,14 +185,15 @@ def draw_with_edges2(path, edges_path):
 #  draw_solution("Taxicab_2048.txt", "Kurbatov_2048.txt")
 #  draw_solution("Taxicab_4096.txt", "Kurbatov_4096.txt")
 #
-#  draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
+    draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
 #  draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
 #  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
 #  draw_with_edges("Taxicab_2048.txt", "Kurbatov_2048.txt")
 #  draw_with_edges("Taxicab_4096.txt", "Kurbatov_4096.txt")
 
-draw_with_edges2("Taxicab_64.txt", "Kurbatov_64.txt") 
-draw_with_edges2("Taxicab_128.txt", "Kurbatov_128.txt") 
-draw_with_edges2("Taxicab_512.txt", "Kurbatov_512.txt") 
-draw_with_edges2("Taxicab_2048.txt", "Kurbatov_2048.txt") 
-draw_with_edges2("Taxicab_4096.txt", "Kurbatov_4096.txt") 
+#  draw_with_edges2("Taxicab_64.txt", "Kurbatov_64.txt")
+#  draw_with_edges2("Taxicab_128.txt", "Kurbatov_128.txt")
+#  draw_with_edges2("Taxicab_512.txt", "Kurbatov_512.txt")
+#  draw_with_edges2("Taxicab_2048.txt", "Kurbatov_2048.txt")
+#  draw_with_edges2("Taxicab_4096.txt", "Kurbatov_4096.txt")
+    time.sleep(1)

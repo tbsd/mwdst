@@ -36,7 +36,7 @@ void write(const Mvdst& problem, const std::filesystem::path& outPath) {
   std::filesystem::remove(outPath);
   std::ofstream outFile{outPath};
   outFile << "c Вес дерева = " << solution.getWeight()
-          << ", число листьев = " << solution.getLeavesCount() << "\n";
+          << ", диаметр = " << solution.diameter << "\n";
   outFile << "p edge " << problem.getProblemSize() << " " << solution.size()
           << "\n";
   for (const auto& edge : solution.edges) {

@@ -124,6 +124,7 @@ class Solution {
   public:
   std::list<EdgeIt> edges;  // Лучше использовать std::unordered_set, но нужно
                             // написать нормальный hash
+  int diameter = 0;
 
   private:
   std::shared_ptr<GraphMatrix> matrix = nullptr;
