@@ -69,9 +69,12 @@ namespace graph {
      * ничего не делаем Возвращает максимальное расстояние от v до любой другой
      * вершины.
      */
-    int setMaxDistances(unsigned long v);
+    int setMaxDistances(unsigned long v, bool isWriting = true);
 
-    int setMaxDistancesImpl(unsigned long v, unsigned long prev, int dist);
+    int setMaxDistancesImpl(unsigned long v,
+                            unsigned long prev,
+                            int dist,
+                            bool isWriting);
 
     const int initSize;
     const int targetDiameter;

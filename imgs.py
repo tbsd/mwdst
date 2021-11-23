@@ -116,6 +116,16 @@ def draw_with_edges(path, edges_path):
         target = points[e[1]]
         edge = [source, target]
         draw.line(edge, fill = "red", width = 0)
+#
+#
+        #  source = points[4]
+        #  target = points[1]
+        #  edge = [source, target]
+        #  draw.line(edge, fill = "blue", width = 0)
+        #  source = points[4]
+        #  target = points[2]
+        #  edge = [source, target]
+        #  draw.line(edge, fill = "green", width = 0)
 
     for p in points:
         im.putpixel((p[0] + dX, p[1] + dY), (255, 255, 255))
@@ -164,6 +174,10 @@ def draw_with_edges2(path, edges_path):
         target = points[e[1]]
         edge = [source, target]
         draw.line(edge, fill = "red", width = 0)
+        if (e[0] == 1 and e[1] == 2 or e[0] == 2 and e[1] == 1):
+            draw.line(edge, fill = "blue", width = 0)
+        if (e[0] == 1 and e[1] == 7) or e[0] == 7 and e[1] == 1:
+            draw.line(edge, fill = "green", width = 0)
 
     for p in points:
         im.putpixel((p[0] + dX, p[1] + dY), (255, 255, 255))
@@ -171,12 +185,13 @@ def draw_with_edges2(path, edges_path):
 
     im.save("{}_with_edges.png".format(path))
 
-#  directory = 'tmpPics'
-#  for filename in os.listdir(directory):
-    #  f = os.path.join(directory, filename)
-    #  if os.path.isfile(f):
-        #  draw_with_edges("Taxicab_2048.txt", f)
-#  exit(0)
+directory = 'tmpPics'
+for filename in os.listdir(directory):
+    f = os.path.join(directory, filename)
+    if os.path.isfile(f):
+        draw_with_edges("Taxicab_64.txt", f)
+draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
+exit(0)
 
 while True:
 
@@ -193,8 +208,8 @@ while True:
 #  draw_solution("Taxicab_4096.txt", "Kurbatov_4096.txt")
 #
     draw_with_edges("Taxicab_64.txt", "Kurbatov_64.txt")
-#  draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
-#  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
+    #  draw_with_edges("Taxicab_128.txt", "Kurbatov_128.txt")
+    #  draw_with_edges("Taxicab_512.txt", "Kurbatov_512.txt")
     #  draw_with_edges("Taxicab_2048.txt", "Kurbatov_2048.txt")
     #  draw_with_edges("Taxicab_4096.txt", "Kurbatov_4096.txt")
     #  exit(0)
